@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import signinLogo from '../assets/bootstrap-logo.svg';
 import Request from "../api/request";
+import PropTypes from 'prop-types';
 
 const SingIn = () => {
     const signInText = {
