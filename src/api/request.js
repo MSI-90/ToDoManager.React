@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 export default class Request {
     #login
     #password
+    #authData
     constructor(email, password){
         this.#login = email || false;
         this.#password = password || false;
-        this.authData = {
+        this.#authData = {
             accessToken: undefined, 
             refreshToken: undefined,
             expiryTime: undefined
@@ -33,10 +34,10 @@ export default class Request {
             });
 
             if (response.status === 200) {
-                this.authData.accessToken = response.data.accessToken; 
-                this.authData.refreshToken = response.data.refreshToken; 
-                this.authData.expiryTime = response.data.expiryTime;
-                return this.authData;
+                this.#authData.accessToken = response.data.accessToken; 
+                this.#authData.refreshToken = response.data.refreshToken; 
+                this.#authData.expiryTime = response.data.expiryTime;
+                return this.#authData;
             } // Возвращаем данные аутентификации
         } catch (error) {
             if (error.response && error.response.status === 422) {

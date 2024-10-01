@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import signinLogo from '../assets/bootstrap-logo.svg';
+import LoginForm from "./loginForm";
 import Request from "../api/request";
-import PropTypes from 'prop-types';
+
 
 const SingIn = () => {
     const signInText = {
@@ -14,7 +14,7 @@ const SingIn = () => {
 
     const [error, setError] = useState(null);
 
-    const login = async (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault();
         if (error != null){
             setError(null);
@@ -26,9 +26,10 @@ const SingIn = () => {
         const request = new Request(email, password);
         try{
             const res = await request.Login();
+            console.log(res);
         } catch (error) {
-            console.log(error);
-            setError(error.message ?? error);
+            let errorMessage = error.message ?? error;
+            setError(errorMessage = errorMessage === 'Network Error' ? errorMessage = 'Ошибка сети' : errorMessage);
         }
         finally{
             loader();
@@ -48,30 +49,7 @@ const SingIn = () => {
     return (
         <div className="body-singin">
             <main className="form-signin ">
-                <form>
-                    <img className="mb-4" src={signinLogo} alt="" width="72" height="57"  />
-                    <h1 className="h3 mb-3 fw-normal">{ signInText.captionForm }</h1>
-
-                    <div className="form-floating">
-                        <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
-                        <label htmlFor="floatingInput">{ signInText.loginLabel }</label>
-                    </div>
-                    <div className="form-floating">
-                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
-                        <label htmlFor="floatingPassword">{ signInText.passwordLabel }</label>
-                    </div>
-                    <div className="invalidData">
-                        <span id = "loader" hidden>Loading...</span>
-                        <span className="error-text">{error}</span>
-                    </div>
-                    <div className="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" value="remember-me" /> { signInText.rememberMeText }
-                        </label>
-                    </div>
-                    <button className="w-100 btn btn-primary" onClick={login}>{ signInText.submitLoginData }</button>
-                    <p className="mt-5 mb-3 text-muted">&copy; {new Date().getFullYear()}</p>
-                </form>
+                <LoginForm formTextInfo = {signInText} onLogin = {handleLogin} error = {error} />
             </main>
         </div>
     );
