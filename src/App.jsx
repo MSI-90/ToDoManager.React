@@ -1,15 +1,17 @@
 import React from "react";
 import SingIn from "./components/signin";
-import Request from "./api/request";
+import {Routes, Route} from 'react-router-dom'
+import UserInfo from "./components/userInfo";
 
 const App = () => {
     // const [loginInfo, setLoginInfo] = useState(
     //     new Request(document.querySelector('#floatingInput').value, document.querySelector('#floatingPassword').value).Login());
 
     return (
-        <>
-            <SingIn />
-        </>
+        <Routes>
+            <Route path="/" element={<SingIn />} />
+            <Route path="/userinfo" element={<UserInfo />} />
+        </Routes>
     )
 }
 

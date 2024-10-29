@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import LoginForm from "./loginForm";
 import Request from "../api/request";
-
+import {Navigate} from 'react-router-dom';
 
 const SingIn = () => {
     const signInText = {
@@ -13,6 +13,7 @@ const SingIn = () => {
     }
 
     const [error, setError] = useState(null);
+    const [redirect, setRedirect] = useState(false);
 
     const handleLogin = async (event) => {
         event.preventDefault();
@@ -24,9 +25,12 @@ const SingIn = () => {
         let email = document.querySelector('#floatingInput').value;
         let password = document.querySelector('#floatingPassword').value;
         const request = new Request(email, password);
+        let resReg = null;
         try{
-            const res = await request.Login();
-            console.log(res);
+            resReg = await request.Login();
+            if (resReg){
+                setRedirect(true);
+            }
         } catch (error) {
             let errorMessage = error.message ?? error;
             setError(errorMessage = errorMessage === 'Network Error' ? errorMessage = 'Ошибка сети' : errorMessage);
@@ -44,6 +48,10 @@ const SingIn = () => {
         } else {
             loaderHTML.setAttribute('hidden', '');
         }
+    }
+
+    if (redirect){
+        return <Navigate to = '/userinfo' />;
     }
 
     return (
